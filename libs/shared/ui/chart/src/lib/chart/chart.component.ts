@@ -3,7 +3,6 @@ import {
   Input,
   OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'coding-challenge-chart',
@@ -11,9 +10,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit {
-  @Input() data$: Observable<(string | number)[][]>;
-  chartData: any;
-
+  @Input() chartData: (string | number)[][];
+  
   chart: {
     title: string;
     type: string;
