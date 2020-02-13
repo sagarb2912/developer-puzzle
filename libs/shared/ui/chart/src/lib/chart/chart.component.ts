@@ -3,7 +3,6 @@ import {
   OnInit,
   Input
 } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { INITIAL_CHART_DATA } from './constants/chart.constants';
 import { IChartDetails } from './interfaces/chart-details.interface';
@@ -18,7 +17,7 @@ import { IChartDetails } from './interfaces/chart-details.interface';
 })
 export class ChartComponent implements OnInit {
   @Input()
-  public data$: Observable<(string | number)[][]>;
+  public chartData: (string | number)[][];
   public chart: IChartDetails;
 
   constructor() { }
