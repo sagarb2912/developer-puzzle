@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import { PriceQueryFacade } from '@coding-challenge/stocks/data-access-price-query';
 
 @Component({
@@ -12,7 +14,7 @@ export class StocksComponent implements OnInit {
   symbol: string;
   period: string;
 
-  quotes$ = this.priceQuery.priceQueries$;
+  public quotes$: Observable<(string | number)[][]> = this.priceQuery.priceQueries$;
 
   timePeriods = [
     { viewValue: 'All available data', value: 'max' },

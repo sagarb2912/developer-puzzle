@@ -2,23 +2,28 @@
  * This is not a production server yet!
  * This is only a minimal backend to get started.
  **/
-import { Server } from 'hapi';
+import { StockUtil } from './utils/stock-utils';
+import { SERVER_CONFIG } from './config/server-config';
+import { CACHE_CONFIG } from './config/cache-config';
+import { API_CONST } from './constants/api-constants';
+import { API_ENDPOINTS } from './constants/api-endpoint-constants';
+
+const Hapi = require('hapi');
 
 const init = async () => {
-  const server = new Server({
-    port: 3333,
-    host: 'localhost'
-  });
+  const server = Hapi.Server(SERVER_CONFIG);
+  server.method(API_CONST.STOCK_CACHE, new StockUtil().getStockInfo, CACHE_CONFIG);
 
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: (request, h) => {
-      return {
-        hello: 'world'
-      };
+  server.route([
+    {
+      method: API_CONST.GET,
+      path: API_ENDPOINTS.GET_STOCK,
+      handler: async (request) => {
+        const { symbol, period } = request.params;
+        return await server.methods.stockCache(symbol, period);
+      }
     }
-  });
+  ]);
 
   await server.start();
   console.log('Server running on %s', server.info.uri);

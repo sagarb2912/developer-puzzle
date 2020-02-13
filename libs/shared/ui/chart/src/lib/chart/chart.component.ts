@@ -5,7 +5,6 @@ import {
   Input,
   OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'coding-challenge-chart',
@@ -13,9 +12,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit {
-  @Input() data$: Observable<any>;
-  chartData: any;
-
+  @Input() chartData: (string | number)[][];
+ 
   chart: {
     title: string;
     type: string;
@@ -33,7 +31,5 @@ export class ChartComponent implements OnInit {
       columnNames: ['period', 'close'],
       options: { title: `Stock price`, width: '600', height: '400' }
     };
-
-    this.data$.subscribe(newData => (this.chartData = newData));
   }
 }
