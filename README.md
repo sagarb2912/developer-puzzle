@@ -27,7 +27,7 @@ Please provide a short code review of the base `master` branch:
 2. What would you change?
 
 -  Used async pipe with quotes$ observable on coding-challenge-chart in stocks.component.html
--  Changed data property binding on google-chart chart.data to data$
+-  Changed data property binding on google-chart to chartData
 -  Removed unused imports from chart.component
 -  Fixed all test case
 
