@@ -1,5 +1,5 @@
 /**
- * Enum for application constant
+ * Enum for application static content
  */
 export enum EAppStaticContent {
     STOCK = 'stocks',
