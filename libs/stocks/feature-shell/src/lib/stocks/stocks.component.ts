@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+
 import { PriceQueryFacade } from '@coding-challenge/stocks/data-access-price-query';
+import { EStockStaticContent } from './enums/stocks-static-content.enum';
+import { PERIOD_CONSTANTS } from './constants/stocks.constants';
 
 @Component({
   selector: 'coding-challenge-stocks',
@@ -8,36 +12,35 @@ import { PriceQueryFacade } from '@coding-challenge/stocks/data-access-price-que
   styleUrls: ['./stocks.component.css']
 })
 export class StocksComponent implements OnInit {
-  stockPickerForm: FormGroup;
-  symbol: string;
-  period: string;
-
-  quotes$ = this.priceQuery.priceQueries$;
-
-  timePeriods = [
-    { viewValue: 'All available data', value: 'max' },
-    { viewValue: 'Five years', value: '5y' },
-    { viewValue: 'Two years', value: '2y' },
-    { viewValue: 'One year', value: '1y' },
-    { viewValue: 'Year-to-date', value: 'ytd' },
-    { viewValue: 'Six months', value: '6m' },
-    { viewValue: 'Three months', value: '3m' },
-    { viewValue: 'One month', value: '1m' }
-  ];
+  public stockPickerForm: FormGroup;
+  public stockStaticContent: typeof EStockStaticContent = EStockStaticContent;
+  public quotes$: Observable<(string | number)[][]> = this.priceQuery.priceQueries$;
+  public currentDate: Date = new Date();
+  public selectedFromDate: Date;
 
   constructor(private fb: FormBuilder, private priceQuery: PriceQueryFacade) {
     this.stockPickerForm = fb.group({
       symbol: [null, Validators.required],
-      period: [null, Validators.required]
+      toDate: [null, Validators.required],
+      fromDate: [null, Validators.required]
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  fetchQuote() {
+  public onFromDateChanged(): void {
+    this.selectedFromDate = this.stockPickerForm.value.fromDate;
+    const { fromDate, toDate } = this.stockPickerForm.value;
+    if (fromDate && toDate && fromDate > toDate) {
+      this.stockPickerForm.controls['toDate'].setValue(fromDate);
+    }
+  }
+
+  public fetchQuote(): void {
     if (this.stockPickerForm.valid) {
-      const { symbol, period } = this.stockPickerForm.value;
-      this.priceQuery.fetchQuote(symbol, period);
+      const { symbol, fromDate, toDate } = this.stockPickerForm.value;
+      this.priceQuery.setDateRange(fromDate, toDate);
+      this.priceQuery.fetchQuote(symbol, PERIOD_CONSTANTS.MAX);
     }
   }
 }
