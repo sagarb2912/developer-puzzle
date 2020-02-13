@@ -12,13 +12,13 @@ const Hapi = require('hapi');
 
 const init = async () => {
   const server = Hapi.Server(SERVER_CONFIG);
-  server.method('stockCache', new StockUtil().getStockInfo, CACHE_CONFIG);
+  server.method(API_CONST.STOCK_CACHE, new StockUtil().getStockInfo, CACHE_CONFIG);
 
   server.route([
     {
       method: API_CONST.GET,
       path: API_ENDPOINTS.GET_STOCK,
-      handler: async (request, h) => {
+      handler: async (request) => {
         const { symbol, period } = request.params;
         return await server.methods.stockCache(symbol, period);
       }
