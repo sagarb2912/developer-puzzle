@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChartComponent } from './chart.component';
+import { SharedUiChartModule } from '@coding-challenge/shared/ui/chart';
+import { INITIAL_CHART_DATA } from './constants/chart.constants';
 
 describe('ChartComponent', () => {
   let component: ChartComponent;
@@ -8,9 +10,9 @@ describe('ChartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartComponent ]
+      imports: [SharedUiChartModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -21,5 +23,12 @@ describe('ChartComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnInit()', () => {
+    it('should set chart initial data', () => {
+      component.ngOnInit();
+      expect(component.chart).toEqual(INITIAL_CHART_DATA);
+    });
   });
 });
