@@ -10,10 +10,10 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label aria-label="Favorite time period">
+    <mat-label for="period" aria-label="Favorite time period">
       Favorite time period
     </mat-label>
-    <mat-select formControlName="period" role="listbox" aria-labelledby="mat-form-field-label-3">
+    <mat-select id="period" formControlName="period" role="listbox" aria-labelledby="mat-form-field-label-3">
       <mat-option role="listitem" *ngFor="let timePeriod of timePeriods" [value]="timePeriod.value">
         {{ timePeriod.viewValue }}
       </mat-option>
