@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { FetchPriceQuery } from './price-query.actions';
+import { map, skip } from 'rxjs/operators';
+
+import { FetchPriceQuery, SetDateRange } from './price-query.actions';
 import { PriceQueryPartialState } from './price-query.reducer';
 import { getSelectedSymbol, getAllPriceQueries } from './price-query.selectors';
-import { map, skip } from 'rxjs/operators';
 
 @Injectable()
 export class PriceQueryFacade {
@@ -20,5 +21,9 @@ export class PriceQueryFacade {
 
   fetchQuote(symbol: string, period: string) {
     this.store.dispatch(new FetchPriceQuery(symbol, period));
+  }
+
+  public setDateRange(fromDate: Date, toDate: Date): void {
+    this.store.dispatch(new SetDateRange(fromDate, toDate));
   }
 }
